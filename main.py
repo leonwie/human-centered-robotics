@@ -35,26 +35,27 @@ class Configuration:
     self.slider = slider
 
 print("Start pi program")
+print(checkFirebaseValue("Input"))
 try:
     while 1:
         try:
             makeKnobs.end()
         except:
             print("NO object makeKnobs")
-        state = checkFirebaseValue("Current_Screen")
+        state = checkFirebaseValue("Current_State")
         print("state: ", state)
         if state == "Welcome":
             configuration = Configuration(True, False, False, False)
         elif state == "Privacy":
             configuration = Configuration(True, True, False, False)
         else:
-            if returnType[state] == "buttons":
+            if checkFirebaseValue("Input") == "Buttons":
                 configuration = Configuration(True, True, True, False)
             else:
                 configuration = Configuration(True, False, False, True)
-                slider.initialise()
+                #slider.initialise()
                 makeKnobs = slider.makeKnobs()
-        while state == checkFirebaseValue("Current_Screen"):
+        while state == checkFirebaseValue("Current_State"):
             GPIO.output(BUTTONLED_YES,configuration.yes)
             GPIO.output(BUTTONLED_NO,configuration.no)
             GPIO.output(BUTTONLED_SKIP,not configuration.skip)
