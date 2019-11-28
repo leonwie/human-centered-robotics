@@ -43,6 +43,7 @@ try:
         except:
             print("NO object makeKnobs")
         state = checkFirebaseValue("Current_State")
+        slider.disableChip()
         print("state: ", state)
         if state == "Welcome":
             configuration = Configuration(True, False, False, False)

@@ -6,6 +6,8 @@ import Adafruit_ADS1x15
 
 from config import *
 
+import slider
+
 
 adc = Adafruit_ADS1x15.ADS1015()
 
@@ -18,7 +20,9 @@ GPIO.setup(MOTOR_LEFT, GPIO.OUT) # IN2
 
 GAIN = 1
 
-GPIO.output(CHIP_EN, 1)
+GPIO.output(CHIP_EN, 0)
+GPIO.output(MOTOR_RIGHT, 0)
+GPIO.output(MOTOR_LEFT, 0)
 #motor_right = GPIO.PWM(MOTOR_RIGHT, 100)
 #motor_right.start(0)
 #motor_left = GPIO.PWM(MOTOR_LEFT, 100)
@@ -27,11 +31,33 @@ GPIO.output(CHIP_EN, 1)
 print("Start pi program")
 try:
     while 1:
-        values = adc.read_adc(0, gain=GAIN)
-        print(values)
-        values = values/SLIDER_FACTOR
-        print(values)
-        time.sleep(1)
+        motorInput = input("Motor left (l) or right (r), or makeKnobs (k) or else test values: ")
+        if motorInput == "l":
+            try:
+                makeKnobs.end()
+            except:
+                print("NO object makeKnobs")
+            print("left")
+            GPIO.output(CHIP_EN, 1)
+            GPIO.output(MOTOR_RIGHT, 0)
+            GPIO.output(MOTOR_LEFT, 1)
+        elif motorInput == "r":
+            try:
+                makeKnobs.end()
+            except:
+                print("NO object makeKnobs")
+            GPIO.output(CHIP_EN, 1)
+            GPIO.output(MOTOR_RIGHT, 1)
+            GPIO.output(MOTOR_LEFT, 0)
+        elif motorInput == "k":
+            makeKnobs = slider.makeKnobs()
+        else:
+            while 1:
+                time.sleep(1)
+                values = adc.read_adc(0, gain=GAIN)
+                print(values)
+                values = values/SLIDER_FACTOR
+                print(values)
 except KeyboardInterrupt:
     print("END")
     GPIO.cleanup()

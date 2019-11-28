@@ -6,12 +6,14 @@ import Adafruit_ADS1x15
 
 from threading import *
 
-import slider
+#import slider
 
 from config import *
 import subprocess
-
-subprocess.run(["rosrun", "turtlesim_cleaner", "rotate.py"])
+def rotation():
+	subprocess.run(["rosrun", "turtlesim_cleaner", "rotate.py"])
+def move_straight():
+	subprocess.run(["rosrun", "turtlesim_cleaner", "move.py"])
 adc = Adafruit_ADS1x15.ADS1015()
 
 
@@ -37,4 +39,6 @@ GAIN = 1
 #        print("exit")
 #except KeyboardInterrupt:
 #    print("END")
+rotation()
+move_straight()
 GPIO.cleanup()

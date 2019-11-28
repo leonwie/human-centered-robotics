@@ -26,6 +26,7 @@ motor_left.start(0)
 GAIN = 1
 
 def reset():
+    GPIO.output(CHIP_EN, 1)
     values = adc.read_adc(0, gain=GAIN)
     values = math.floor(values/SLIDER_FACTOR)
     while values>50:
@@ -33,8 +34,10 @@ def reset():
         values = math.floor(values/SLIDER_FACTOR)
         GPIO.output(MOTOR_LEFT, True)
     GPIO.output(MOTOR_LEFT, False)
+    GPIO.output(CHIP_EN, 0)
 def initialise():
     print("start initialise")
+    GPIO.output(CHIP_EN, 1)
     values = adc.read_adc(0, gain=GAIN)
     values = math.floor(values/SLIDER_FACTOR)
     while values<800:
@@ -49,6 +52,7 @@ def initialise():
         motor_right.ChangeDutyCycle(0)
         motor_left.ChangeDutyCycle(80)
     motor_left.ChangeDutyCycle(0)
+    GPIO.output(CHIP_EN, 0)
     print("end initialise")
 def getValue():
     values = adc.read_adc(0, gain=GAIN)
@@ -85,12 +89,21 @@ class makeKnobs():
             for i in peakValues:
                 if values > i-50 and values < i+50:
                     if values > i+10:
-                        motor_right.ChangeDutyCycle(0)
-                        motor_left.ChangeDutyCycle(80)
+                        GPIO.output(CHIP_EN, 1)
+                        GPIO.output(MOTOR_RIGHT, 0)
+                        GPIO.output(MOTOR_LEFT, 1)
+                        #motor_right.ChangeDutyCycle(0)
+                        #motor_left.ChangeDutyCycle(80)
                     elif values < i-10:
-                        motor_right.ChangeDutyCycle(80)
-                        motor_left.ChangeDutyCycle(0)
+                        GPIO.output(CHIP_EN, 1)
+                        GPIO.output(MOTOR_RIGHT, 1)
+                        GPIO.output(MOTOR_LEFT, 0)
+                        #motor_right.ChangeDutyCycle(80)
+                        #motor_left.ChangeDutyCycle(0)
                     else:
+                        GPIO.output(CHIP_EN, 0)
+                        GPIO.output(MOTOR_RIGHT, 0)
+                        GPIO.output(MOTOR_LEFT, 0)
                         motor_right.ChangeDutyCycle(0)
                         motor_left.ChangeDutyCycle(0)
                 else:
@@ -99,6 +112,11 @@ class makeKnobs():
                     if values2>values:
                         motor_left.ChangeDutyCycle(0)
                     else:
+                        GPIO.output(CHIP_EN, 0)
+                        GPIO.output(MOTOR_RIGHT, 0)
+                        GPIO.output(MOTOR_LEFT, 0)
                         motor_left.ChangeDutyCycle(0)
                         motor_right.ChangeDutyCycle(0)
 
+def disableChip():
+    GPIO.output(CHIP_EN, 0)

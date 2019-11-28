@@ -11,10 +11,13 @@ def rotate():
     vel_msg = Twist()
 
     # Receiveing the user's input
-    print("Let's rotate your robot")
-    speed = input("Input your speed (degrees/sec):")
-    angle = input("Type your distance (degrees):")
-    clockwise = input("Clowkise?: ") #True or false
+#    print("Let's rotate your robot")
+    speed = 30
+#input("Input your speed (degrees/sec):")
+    angle = 180
+#input("Type your distance (degrees):")
+    clockwise = 0
+#input("Clowkise?: ") #True or false
 
     #Converting from angles to radians
     angular_speed = speed*2*PI/360
