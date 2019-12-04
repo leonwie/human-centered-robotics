@@ -73,7 +73,7 @@ try:
                 if configuration.slider:
                     setFirebaseValue(state, "Yes")
                     makeKnobs.end()
-                    #slider.initialise()
+                    slider.reset()
                 else:
                     setFirebaseValue(state,"Yes")
                     time.sleep(0.5)
@@ -83,7 +83,7 @@ try:
             elif GPIO.input(BUTTONIN_SKIP) == GPIO.HIGH and configuration.skip:
                 if configuration.slider:
                     makeKnobs.end()
-                    #slider.reset()
+                    slider.reset()
                 setFirebaseValue(state,"Skip")
                 time.sleep(0.5)
 
