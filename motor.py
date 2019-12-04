@@ -38,17 +38,19 @@ try:
             except:
                 print("NO object makeKnobs")
             print("left")
-            GPIO.output(CHIP_EN, 1)
-            GPIO.output(MOTOR_RIGHT, 0)
-            GPIO.output(MOTOR_LEFT, 1)
+            while 1:
+                GPIO.output(CHIP_EN, 1)
+                GPIO.output(MOTOR_RIGHT, 0)
+                GPIO.output(MOTOR_LEFT, 1)
         elif motorInput == "r":
             try:
                 makeKnobs.end()
             except:
                 print("NO object makeKnobs")
-            GPIO.output(CHIP_EN, 1)
-            GPIO.output(MOTOR_RIGHT, 1)
-            GPIO.output(MOTOR_LEFT, 0)
+            while 1:
+                GPIO.output(CHIP_EN, 1)
+                GPIO.output(MOTOR_RIGHT, 1)
+                GPIO.output(MOTOR_LEFT, 0)
         elif motorInput == "k":
             makeKnobs = slider.makeKnobs()
         else:

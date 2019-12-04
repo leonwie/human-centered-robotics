@@ -53,8 +53,8 @@ try:
             if checkFirebaseValue("Input") == "Buttons":
                 configuration = Configuration(True, True, True, False)
             else:
-                configuration = Configuration(True, False, False, True)
-                #slider.initialise()
+                configuration = Configuration(True, False, True, True)
+                slider.initialise()
                 makeKnobs = slider.makeKnobs()
         while state == checkFirebaseValue("Current_State"):
             GPIO.output(BUTTONLED_YES,configuration.yes)
@@ -64,9 +64,9 @@ try:
                 setFirebaseValue("Current_Slider_Value", slider.getLevel())
             if GPIO.input(BUTTONIN_YES) == GPIO.HIGH and configuration.yes:
                 if configuration.slider:
-                    setFirebaseValue(state, slider.getLevel())
+                    setFirebaseValue(state, "Yes")
                     makeKnobs.end()
-                    slider.reset()
+                    #slider.initialise()
                 else:
                     setFirebaseValue(state,"Yes")
                     time.sleep(0.5)
@@ -74,6 +74,9 @@ try:
                 setFirebaseValue(state,"No")
                 time.sleep(0.5)
             elif GPIO.input(BUTTONIN_SKIP) == GPIO.HIGH and configuration.skip:
+                if configuration.slider:
+                    makeKnobs.end()
+                    #slider.reset()
                 setFirebaseValue(state,"Skip")
                 time.sleep(0.5)
 
