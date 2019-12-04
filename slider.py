@@ -27,14 +27,21 @@ GAIN = 1
 
 def reset():
     GPIO.output(CHIP_EN, 1)
-    print("reset values")
     values = adc.read_adc(0, gain=GAIN)
     values = math.floor(values/SLIDER_FACTOR)
+    GPIO.output(MOTOR_RIGHT, 0)
+    GPIO.output(MOTOR_LEFT, 1)
     while values>50:
+        GPIO.output(CHIP_EN, 1)
+        GPIO.output(MOTOR_RIGHT, 0)
+        GPIO.output(MOTOR_LEFT, 1)
         values = adc.read_adc(0, gain=GAIN)
         values = math.floor(values/SLIDER_FACTOR)
-        GPIO.output(MOTOR_LEFT, 1)
+        #motor_right.ChangeDutyCycle(0)
+        #motor_left.ChangeDutyCycle(80)
+    GPIO.output(MOTOR_RIGHT, 0)
     GPIO.output(MOTOR_LEFT, 0)
+    print("end reset")
     GPIO.output(CHIP_EN, 0)
 def initialise():
     print("start initialise")
@@ -44,15 +51,17 @@ def initialise():
     while values<800:
         values = adc.read_adc(0, gain=GAIN)
         values = math.floor(values/SLIDER_FACTOR)
-        motor_right.ChangeDutyCycle(80)
-        motor_left.ChangeDutyCycle(0)
-    motor_right.ChangeDutyCycle(0)
+        GPIO.output(CHIP_EN, 1)
+        GPIO.output(MOTOR_RIGHT, 1)
+        GPIO.output(MOTOR_LEFT, 0)
     while values>50:
         values = adc.read_adc(0, gain=GAIN)
         values = math.floor(values/SLIDER_FACTOR)
-        motor_right.ChangeDutyCycle(0)
-        motor_left.ChangeDutyCycle(80)
-    motor_left.ChangeDutyCycle(0)
+        GPIO.output(CHIP_EN, 1)
+        GPIO.output(MOTOR_RIGHT, 0)
+        GPIO.output(MOTOR_LEFT, 1)
+    GPIO.output(MOTOR_RIGHT, 0)
+    GPIO.output(MOTOR_LEFT, 0)
     GPIO.output(CHIP_EN, 0)
     print("end initialise")
 def getValue():
@@ -118,6 +127,9 @@ class makeKnobs():
                         GPIO.output(MOTOR_LEFT, 0)
                         motor_left.ChangeDutyCycle(0)
                         motor_right.ChangeDutyCycle(0)
+        GPIO.output(CHIP_EN, 0)
+        GPIO.output(MOTOR_RIGHT, 0)
+        GPIO.output(MOTOR_LEFT, 0)
 
 def disableChip():
     GPIO.output(CHIP_EN, 0)

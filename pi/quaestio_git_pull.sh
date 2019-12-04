@@ -1,7 +1,3 @@
-echo "1"
-cd ..
-echo "2"
+cd /home/pi/Desktop/human-centered-robotics/pi
 git pull
-echo "3"
-python3 main.py
-echo "end"
+/usr/bin/python3 /home/pi/Desktop/human-centered-robotics/main.py

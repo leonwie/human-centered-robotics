@@ -4,7 +4,7 @@ import time
 import math
 import Adafruit_ADS1x15
 
-from firebase_access import checkFirebaseValue, setFirebaseValue
+from firebase_access import checkFirebaseValue, setFirebaseValue, asyncSetFirebaseValue
 
 from config import *
 
@@ -67,25 +67,28 @@ try:
             GPIO.output(BUTTONLED_YES,configuration.yes)
             GPIO.output(BUTTONLED_NO,configuration.no)
             GPIO.output(BUTTONLED_SKIP,not configuration.skip)
-            if configuration.slider:
-                setFirebaseValue("Current_Slider_Value", slider.getLevel())
+            #if configuration.slider:
+                #setFirebaseValue("Current_Slider_Value", slider.getLevel())
             if GPIO.input(BUTTONIN_YES) == GPIO.HIGH and configuration.yes:
                 if configuration.slider:
+                    print("SLIDER YESS")
                     setFirebaseValue(state, "Yes")
                     makeKnobs.end()
                     slider.reset()
                 else:
                     setFirebaseValue(state,"Yes")
-                    time.sleep(0.5)
+                    time.sleep(0.2)
             elif GPIO.input(BUTTONIN_NO) == GPIO.HIGH and configuration.no:
                 setFirebaseValue(state,"No")
-                time.sleep(0.5)
+                time.sleep(0.2)
             elif GPIO.input(BUTTONIN_SKIP) == GPIO.HIGH and configuration.skip:
                 if configuration.slider:
-                    makeKnobs.end()
-                    slider.reset()
-                setFirebaseValue(state,"Skip")
-                time.sleep(0.5)
+                        setFirebaseValue(state, "Skip")
+                        makeKnobs.end()
+                        slider.reset()
+                else:
+                    setFirebaseValue(state,"Skip")
+                    time.sleep(0.5)
 
 except KeyboardInterrupt:
     print("END")
