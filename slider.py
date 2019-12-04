@@ -31,10 +31,8 @@ def reset():
     values = adc.read_adc(0, gain=GAIN)
     values = math.floor(values/SLIDER_FACTOR)
     while values>50:
-        GPIO.output(CHIP_EN, 1)
         values = adc.read_adc(0, gain=GAIN)
         values = math.floor(values/SLIDER_FACTOR)
-        motor_right.ChangeDutyCycle(80)
         GPIO.output(MOTOR_LEFT, 1)
     GPIO.output(MOTOR_LEFT, 0)
     GPIO.output(CHIP_EN, 0)
