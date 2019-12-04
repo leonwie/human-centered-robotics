@@ -54,7 +54,7 @@ try:
             os.system("sudo reboot now")
         elif state == "Pull":
             from subprocess import Popen
-            Popen('home/pi/Desktop/human-centered-robotics/pi/quaestio_git_pull.sh', shell=True, stdin=None, stdout=None, stderr=None)
+            Popen('/home/pi/Desktop/human-centered-robotics/pi/quaestio_git_pull.sh', shell=True, stdin=None, stdout=None, stderr=None)
         else:
             if checkFirebaseValue("Input") == "Buttons":
                 configuration = Configuration(True, True, True, False)
