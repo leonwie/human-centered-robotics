@@ -1,4 +1,6 @@
 import pyrebase
+import slider
+import threading
 
 firebaseConfig = {
     "apiKey": "AIzaSyDR4MYczuwRwAq0gmAyNHl_kURK3UmWlYs",
@@ -20,5 +22,13 @@ def checkFirebaseValue(childName):
     user = db.child("Hardware_Interface").child(childName).get()
     return user.val()
 
-def setFirebaseValue(state, value):
+def setFirebaseValue():
   db.child("Hardware_Interface").update({state:value})
+
+class asyncSetFirebaseSliderValue():
+    def __init__(self):
+        thread = threading.Thread(target=self.run, args=())
+        thread.daemon = True
+        thread.start()
+    def run(self):
+        db.child("Hardware_Interface").update({"Current_Slider_Value", slider.getLevel()})
